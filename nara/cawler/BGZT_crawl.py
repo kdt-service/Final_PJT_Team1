@@ -5,42 +5,6 @@ import pandas as pd
 import multiprocessing
 from fake_useragent import UserAgent
 
-ua = UserAgent(verify_ssl=False)
-fake_ua = ua.random
-headers = {
-    'user-agent' : fake_ua
-}
-
-# def crawler(id_list : list) -> pd.DataFrame:
-#     product_df = pd.DataFrame(columns=['product_id' ,'product_name', 'image_url', 'price', 'cat_id', 'date', 'sale_status', 'status'])
-
-#     for id in id_list:
-#         print('INSERT ID :', id)
-#         product = 'https://api.bunjang.co.kr/api/pms/v1/products-detail/{}?viewerUid=-1'.format(id)
-#         response = requests.get(product)
-#         print(response)
-#         if response.status_code == 200:
-#             product_info = json.loads(str(requests.get(product, headers=headers).text))
-#             product_id = id
-            
-#             try :
-#                 product_name = product_info['data']['product']['name'] # 제품명
-#                 image_url = product_info['data']['product']['imageUrl'] # 이미지url
-#                 price = product_info['data']['product']['price'] # 가격
-#                 # info = product_info['data']['product']['description'].replace('\n', ' ').strip() # 제품설명
-#                 cat_id = product_info['data']['product']['category']['id'] # 카테고리 id
-#                 date = product_info['data']['product']['updatedAt'] # date 형태가 '2023-05-16T16:18:23.422Z'
-#                 sale_status = product_info['data']['product']['saleStatus'] # 판매상태
-#                 status = product_info['data']['product']['status'] # 상품상태
-
-#             except :
-#                 product_name, image_url, price, cat_id, date, sale_status, status = None, None, None, None, None, None, None
-#                 # product_name, image_url, price, info, cat_id, date, sale_status, status = None, None, None, None, None, None, None, None
-
-#             product_df.loc[len(product_df)] = [product_id ,product_name, image_url, price, cat_id, date, sale_status, status]
-#                                             #  [product_id ,product_name, image_url, price, info, cat_id, date, sale_status, status]
-#             print('NUM :',len(product_df))
-#     return product_df
 
 def write_error_log(response, filename):
     with open(filename, 'w', encoding='utf-8') as file:
@@ -50,6 +14,11 @@ def id_crawler(id : int | str) -> list :
     '''
     input id -> product list
     '''
+    ua = UserAgent(verify_ssl=False)
+    fake_ua = ua.random
+    headers = {
+        'user-agent' : fake_ua
+}
 
     product = f'https://api.bunjang.co.kr/api/pms/v1/products-detail/{id}?viewerUid=-1'
 
@@ -103,6 +72,7 @@ def id_crawler_mp(id_list: list) -> pd.DataFrame:
 
     return product_df
 
+# def save_to_csv_file()
 
 if __name__ == '__main__':
 
