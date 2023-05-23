@@ -2,3 +2,4 @@
 *.txt
 *.json
 __pycache__
+config
