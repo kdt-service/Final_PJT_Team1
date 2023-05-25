@@ -1,6 +1,6 @@
 import pymysql
 import pandas as pd
-from cleansing import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
+from cleansing_df import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
 
 class CategoryDB :
 
