@@ -36,9 +36,9 @@ def cleanse_bj(df:pd.DataFrame):
     '''
     # 칼럼별 클렌징 함수 적용
     df['prd_name'] = df['prd_name'].apply(remove_pmarks) 
-    df['info'] = df['info'].apply(lambda x: remove_emojis(remove_pmarks(x)))
-    df['info'] = df['info'].apply(lambda x: re.sub(r'(\n+|\t+|\.+)', ' ', x))
-    df['info'] = df['info'].apply(lambda x: re.sub(r' +', ' ', x))
+    df['prd_info'] = df['prd_info'].apply(lambda x: remove_emojis(remove_pmarks(x)))
+    df['prd_info'] = df['prd_info'].apply(lambda x: re.sub(r'(\n+|\t+|\.+)', ' ', x))
+    df['prd_info'] = df['prd_info'].apply(lambda x: re.sub(r' +', ' ', x))
     
     return df
 
@@ -54,7 +54,7 @@ def cleanse_naver(df:pd.DataFrame):
 def bj_url_list(df:pd.DataFrame):
     '''base_url -> list로 변환
     '''
-    list1 = df[['base_url','image_count']].values.tolist()
+    list1 = df[['base_url','image_cnt']].values.tolist()
     result = []
     for l in range(len(list1)):
         result.append(str([list1[l][0].replace('{cnt}', str(n)) for n in range(1, int(list1[l][1]+1))]))
