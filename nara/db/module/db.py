@@ -1,6 +1,6 @@
 import pymysql
 import pandas as pd
-from cleansing_df import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
+from module.cleansing_df import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
 
 class CategoryDB :
 
@@ -107,7 +107,7 @@ class CategoryDB :
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = [['id', 'name', 'cat_id', 'image_url', 'low_price', 'cat1', 'cat2', 'cat3']]
+                df_column = ['id', 'name', 'cat_id', 'image_url', 'low_price', 'cat1', 'cat2', 'cat3']
                 df = pd.DataFrame(result, columns=df_column)
         else:
             if where_sql :
@@ -115,7 +115,7 @@ class CategoryDB :
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = [['id', 'name', 'cat_id', 'image_url', 'low_price']]
+                df_column = ['id', 'name', 'cat_id', 'image_url', 'low_price']
                 df = pd.DataFrame(result, columns=df_column)
 
         return df
@@ -151,7 +151,7 @@ class CategoryDB :
             where_sql.append(f"tag LIKE '%{tag}%'")
 
         if status is not None :
-            where_sql.append(f"status = {status}") # USED, NEW
+            where_sql.append(f"status = '{status}'") 
             
         if min_price is not None and max_price is not None:
             where_sql.append(f"price BETWEEN {min_price} AND {max_price}")
@@ -176,7 +176,7 @@ class CategoryDB :
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = [['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag', 'cat1', 'cat2', 'cat3']]
+                df_column = ['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag', 'cat1', 'cat2', 'cat3']
                 df = pd.DataFrame(result, columns=df_column)
         else:
             if where_sql :
@@ -184,7 +184,7 @@ class CategoryDB :
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = [['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag']]
+                df_column = ['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag']
                 df = pd.DataFrame(result, columns=df_column)
 
         
