@@ -10,6 +10,9 @@ if __name__ == '__main__':
 
     db = CategoryDB(config)
 
-    a = db.select_bunjang(status='USED')
+    df = pd.read_csv('data/concat_bj_data.csv', dtype={'image_url': str})
+    db.insert_bunjang(df=df) 
 
-    print(a.head(3))
+
+        
+

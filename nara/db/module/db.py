@@ -44,8 +44,8 @@ class CategoryDB :
 
     def insert_bunjang(self, df:pd.DataFrame) :
         '''번개장터 데이터 삽입\n
-        '''
-        required_columns = ['prd_id','prd_name','base_url','image_cnt', 'price', 'prd_info','cat_id','datetime','prd_status','prd_tag']
+        ''' 
+        required_columns = ['product_id', 'product_name', 'image_url', 'image_cnt', 'price', 'info', 'cat_id', 'date', 'keywords']
 
         assert not set(required_columns) - set(df.columns), '칼럼이 일치하지 않습니다.'
 
@@ -55,13 +55,13 @@ class CategoryDB :
         ## 클랜징 코드 넣기 ##
         df = cleanse_bj(df)
 
-        df['datetime'] = df['datetime'].apply(lambda x: to_datetime(x))
+        df.loc[:, 'date'] = df['date'].apply(lambda x: to_datetime(x))
 
         ## image_url_list 로 변환하는 코드 ##
         df = bj_url_list(df)
 
-        df = df[['prd_id','prd_name','image_url_list','price', 'prd_info','cat_id','datetime','prd_status','prd_tag']]
-        bunjang_columns = ['id', 'name', 'image_url_list','price', 'info',  'cat_id', 'writed_at', 'status', 'tag']
+        df = df[['product_id', 'product_name', 'image_url_list', 'price', 'info', 'cat_id', 'date', 'keywords']]
+        bunjang_columns = ['id', 'name', 'image_url_list', 'price', 'info',  'cat_id', 'writed_at', 'tag']
         df.columns = bunjang_columns # df , DB 칼럼명 일치
         
         insert_sql = f"INSERT INTO bunjang_prd (`{'`,`'.join(bunjang_columns)}`) VALUES ({','.join(['%s']*len(bunjang_columns))})"
@@ -90,7 +90,7 @@ class CategoryDB :
             join_sql = "LEFT JOIN prd_cat ON naver_prd.cat_id = prd_cat.id"
             main_query = 'SELECT naver_prd.*, prd_cat.cat1, prd_cat.cat2, prd_cat.cat3 FROM naver_prd'
 
-        if name:
+        if name is not None :
             where_sql.append(f"name LIKE '%{name}%'")
         
         if min_price is not None and max_price is not None:
@@ -100,7 +100,7 @@ class CategoryDB :
         elif max_price is not None:
             where_sql.append(f"low_price <= {max_price}")
 
-        if join_sql:
+        if join_sql is not None :
             main_query += " " + join_sql
             if where_sql :
                 main_query += f' WHERE {" AND ".join(where_sql)}'
