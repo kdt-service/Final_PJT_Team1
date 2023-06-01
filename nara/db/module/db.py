@@ -120,29 +120,25 @@ class CategoryDB :
 
         return df
     
-    def select_bunjang(self, name=None, cat_id=None, start_date=None, end_date=None, min_price = None, max_price=None, status=None, tag=None) :
-        '''네이버 DB데이터 출력\n
+    def select_bunjang(self, name=None, cat_id=None, start_date=None, end_date=None, min_price = None, max_price=None, tag=None) :
+        '''번개장터 DB데이터 출력\n
         name : 상품 이름, 검색어가 포함된 모든 상품 출력 \n
         cat_id : 카테고리 id \n
         start_date : 시작일 \n
         end_date : 종료일 \n
         min_price : 최소 가격 \n
         max_price : 최대 가격 \n
-        status : 상품 상태, USED(중고) | NEW(새상품) \n
         tag : 상품 태그, 검색어가 포함된 모든 상품 출력 \n
         '''
-
-        if status is not None and status not in ["USED", "NEW"]:
-            raise ValueError("status는 'USED' 또는 'NEW'이어야 합니다.")
         
         where_sql = []
-        join_sql = None
-        main_query = 'SELECT * FROM bunjang_prd'
+        join_sql = "LEFT JOIN prd_cat ON bunjang_prd.cat_id = prd_cat.id"
+        main_query = 'SELECT bunjang_prd.*, prd_cat.cat1, prd_cat.cat2, prd_cat.cat3 FROM bunjang_prd'
 
         if cat_id is not None:
             where_sql.append(f"cat_id = {cat_id}")
-            join_sql = "LEFT JOIN prd_cat ON bunjang_prd.cat_id = prd_cat.id"
-            main_query = 'SELECT bunjang_prd.*, prd_cat.cat1, prd_cat.cat2, prd_cat.cat3 FROM bunjang_prd'
+            # join_sql = "LEFT JOIN prd_cat ON bunjang_prd.cat_id = prd_cat.id"
+            # main_query = 'SELECT bunjang_prd.*, prd_cat.cat1, prd_cat.cat2, prd_cat.cat3 FROM bunjang_prd'
 
         if name is not None :
             where_sql.append(f"name LIKE '%{name}%'")
@@ -150,8 +146,6 @@ class CategoryDB :
         if tag is not None :
             where_sql.append(f"tag LIKE '%{tag}%'")
 
-        if status is not None :
-            where_sql.append(f"status = '{status}'") 
             
         if min_price is not None and max_price is not None:
             where_sql.append(f"price BETWEEN {min_price} AND {max_price}")
@@ -172,11 +166,10 @@ class CategoryDB :
             main_query += " " + join_sql
             if where_sql :
                 main_query += f' WHERE {" AND ".join(where_sql)}'
-            print(main_query)
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = ['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag', 'cat1', 'cat2', 'cat3']
+                df_column = ['id', 'name', 'image_url_list', 'price', 'info', 'cat_id', 'writed_at', 'tag', 'cat1', 'cat2', 'cat3']
                 df = pd.DataFrame(result, columns=df_column)
         else:
             if where_sql :
@@ -184,7 +177,7 @@ class CategoryDB :
             with self.DB.cursor() as cur:
                 cur.execute(main_query)
                 result = cur.fetchall()
-                df_column = ['id', 'name', 'image_url_list','info', 'price', 'cat_id', 'writed_at', 'status', 'tag']
+                df_column = ['id', 'name', 'image_url_list','price', 'info', 'cat_id', 'writed_at', 'tag']
                 df = pd.DataFrame(result, columns=df_column)
 
         
