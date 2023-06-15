@@ -35,6 +35,12 @@ if __name__ == '__main__':
     
     # db.insert_naver(df)
 
+    # df = db.get_cate()
+
+    # df = db.select_bunjang(cat_id=400080300)
+
+    # df.to_csv('cate22.csv',index=False)
+
     
 
         

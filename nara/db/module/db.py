@@ -185,3 +185,13 @@ class CategoryDB :
         
         return df
     
+    def get_cate(self):
+        main_query = 'SELECT * FROM category_db.prd_cat;'
+
+        with self.DB.cursor() as cur:
+            cur.execute(main_query)
+            result = cur.fetchall()
+            df_column = ['id', 'cat1', 'cat2', 'cat3']
+            df = pd.DataFrame(result, columns=df_column)
+        
+        return df
