@@ -30,6 +30,8 @@ class CategoryDB :
 
         df = cleanse_naver(df)
 
+        df = df.drop_duplicates(subset='prd_id')
+        
         naver_colums = ['id','name','cat_id','image_url','low_price'] 
         df.columns = naver_colums # df , DB 칼럼명 일치
 
@@ -54,7 +56,7 @@ class CategoryDB :
 
         ## 클랜징 코드 넣기 ##
         df = cleanse_bj(df)
-
+        
         df.loc[:, 'date'] = df['date'].apply(lambda x: to_datetime(x))
 
         ## image_url_list 로 변환하는 코드 ##

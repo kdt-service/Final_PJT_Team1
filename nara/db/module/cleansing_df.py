@@ -18,16 +18,16 @@ def read_list_file(file_path):
     return data_list
 
 # 이모티콘 제거 함수
-# def remove_emojis(text):
-#     emoji_pattern = re.compile("["
-#                                u"\U0001F600-\U0001F64F"  # 이모티콘1 (일반)
-#                                u"\U0001F300-\U0001F5FF"  # 이모티콘2 (시계, 날씨 등)
-#                                u"\U0001F680-\U0001F6FF"  # 이모티콘3 (차, 비행기 등)
-#                                u"\U0001F1E0-\U0001F1FF"  # 이모티콘4 (국기 등)
-#                                u"\U00002600-\U000027BF"  # 이모티콘5 (기타)
-#                                u"\U0001F900-\U0001F9FF"  # 이모티콘6 (심볼, 표시 등)
-#                                "]+", flags=re.UNICODE)
-#     return emoji_pattern.sub(r'', text)
+def remove_emojis(text):
+    emoji_pattern = re.compile("["
+                               u"\U0001F600-\U0001F64F"  # 이모티콘1 (일반)
+                               u"\U0001F300-\U0001F5FF"  # 이모티콘2 (시계, 날씨 등)
+                               u"\U0001F680-\U0001F6FF"  # 이모티콘3 (차, 비행기 등)
+                               u"\U0001F1E0-\U0001F1FF"  # 이모티콘4 (국기 등)
+                               u"\U00002600-\U000027BF"  # 이모티콘5 (기타)
+                               u"\U0001F900-\U0001F9FF"  # 이모티콘6 (심볼, 표시 등)
+                               "]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', text)
 
 def to_datetime(date_string):
     try:
@@ -65,11 +65,12 @@ def cleanse_bj(df:pd.DataFrame):
 # 네이버 클렌징 함수
 def cleanse_naver(df:pd.DataFrame):
     '''네이버 클렌징 함수 \n
-    #'id','name','cat_id','image_url','low_price'
+
     '''
     # 칼럼별 클렌징 함수 적용
-    df['name'] = df['name'].apply(remove_pmarks)
-    df['id'] = df['id'].astype(str) + '-' +df['cat_id'].astype(str)
+    # df['prd_name'] = df['prd_name'].apply(remove_pmarks)
+    df['prd_name'] = df['prd_name'].apply(lambda x: re.sub('[^ㄱ-ㅎ가-힣A-Za-z0-9 ]', '', x))
+    df['prd_id'] = df['prd_id'].astype(str) + '-' +df['cat_id'].astype(str)
 
     return df
 
