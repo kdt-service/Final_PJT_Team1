@@ -5,3 +5,6 @@
 *.html
 __pycache__
 config
+catid_list
+cat_list
+prd_list
