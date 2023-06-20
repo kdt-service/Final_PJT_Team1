@@ -1,0 +1,7 @@
+# 30 9 * * * /home/ubuntu/anaconda3/envs/cate/bin/python /home/ubuntu/workspace/API/app.py /home/ubuntu/workspace/LOG/api.txt 2>&1
+
+# 30 9-18 * * * /home/ubuntu/anaconda3/envs/cate/bin/python /home/ubuntu/workspace/CRAWL/bgzt_id_crawler.py /home/ubuntu/workspace/LOG/id_crawl.txt 2>&1
+
+# 30 9-18 * * * /home/ubuntu/anaconda3/envs/cate/bin/python /home/ubuntu/workspace/CRAWL/bgzt_crawler.py /home/ubuntu/workspace/LOG/crawl.txt 2>&1
+
+# 30 9-18 * * * /home/ubuntu/anaconda3/envs/cate/bin/python /home/ubuntu/workspace/DB/main.py /home/ubuntu/workspace/LOG/db.txt 2>&1
