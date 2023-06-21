@@ -27,7 +27,7 @@ from PIL import Image
 import numpy as np
 from flask_mysqldb import MySQL
 import pandas as pd
-
+from datetime import datetime, timedelta
 
 DBconfig = {}
 with open('config/DBconfig', 'r') as f:
@@ -72,10 +72,30 @@ def model_def(image, *text_data):
 
 @app.route('/price', methods=['POST'])
 def market_price():
+    if 'product_brand' not in request.form or 'product_type' not in request.form :
+        return '상품정보를 찾을 수 없습니다.', 400
+ 
+    day7 = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d') 
+
     brand = request.form['product_brand'] # 나이키, 구찌, 프라다
     product_type = request.form['product_type'] # 신발, 지갑, 티셔츠
+    
+
+    query = """
+    SELECT id, price
+    FROM category_db.bunjang_prd
+    WHERE name LIKE %(brand)s
+      AND name LIKE %(product_type)s
+      AND writed_at BETWEEN %(date)s AND CURDATE()
+    """
+    params = {
+        'brand': f'%{brand}%',
+        'product_type': f'%{product_type}%',
+        'date': day7
+    }
+
     cursor = mysql.connection.cursor()
-    cursor.execute('SELECT id, price FROM category_db.bunjang_prd WHERE name LIKE "%{}%" AND name LIKE "%{}%"'.format(brand, product_type))
+    cursor.execute(query, params)
     result = cursor.fetchall()
     cursor.close()
 
