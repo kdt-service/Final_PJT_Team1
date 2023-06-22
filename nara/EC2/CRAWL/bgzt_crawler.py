@@ -32,8 +32,8 @@ def product_info_crawler(pid):
 
     url = 'https://api.bunjang.co.kr/api/pms/v1/products-detail/{}?viewerUid=-1'.format(pid)
     res = requests.get(url, headers = headers)
-    print('id -->', pid)
-    print('response -->', res)
+    # print('id -->', pid)
+    # print('response -->', res)
 
     if (res.status_code == 200) and (res.headers["content-type"].strip().startswith("application/json")):
         product_info = res.json()

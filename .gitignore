@@ -3,6 +3,7 @@
 *.json
 *.jpg
 *.html
+*.log
 __pycache__
 config
 catid_list

@@ -48,7 +48,7 @@ def prd_id_extractor(category_num):
         prd_id_list.extend([datas['pid'] for datas in data['list']])
 
 
-    print('category num %s done'%(category_num))
+    # print('category num %s done'%(category_num))
     time.sleep(1.25) 
     
     return prd_id_list

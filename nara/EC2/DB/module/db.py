@@ -1,6 +1,6 @@
 import pymysql
 import pandas as pd
-from module.cleansing_df import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
+from DB.module.cleansing_df import cleanse_bj, cleanse_naver, to_datetime, bj_url_list
 
 class CategoryDB :
 
@@ -8,7 +8,7 @@ class CategoryDB :
         try:
             configs['port'] = int(configs['port'])
             self.DB = pymysql.connect(**configs)
-            print('데이터베이스 연결 성공')
+            print('Connect DB complete')
         except pymysql.err.OperationalError as e:
             print("데이터베이스 연결 실패:", e)
 
@@ -42,7 +42,7 @@ class CategoryDB :
             cur.executemany(insert_sql, data)
         self.DB.commit()
 
-        print('Insert naver data done!')
+        # print('Insert naver data done!')
 
     def insert_bunjang(self, df:pd.DataFrame) :
         '''번개장터 데이터 삽입\n
@@ -73,7 +73,7 @@ class CategoryDB :
             cur.executemany(insert_sql, data)
         self.DB.commit()
 
-        print('Insert bunjang data done!')
+        # print('Insert bunjang data done!')
     
     def select_naver(self, name=None, cat_id=None, min_price = None, max_price=None) -> pd.DataFrame :
         '''네이버 DB데이터 출력\n

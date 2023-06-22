@@ -1,3 +1,5 @@
+# 임의의 데이터를 추출거나 삽입할때, 사용하는 py 파일
+
 import pymysql
 import pandas as pd 
 from module.db import CategoryDB
@@ -10,7 +12,7 @@ if __name__ == '__main__':
 
     db = CategoryDB(config)
 
-    df = pd.read_csv('/home/ubuntu/workspace/CRAWL/data/BGZT.csv')
+    # df = pd.read_csv('/home/ubuntu/workspace/CRAWL/data/BGZT.csv')
     
     # print(df.columns)
     # db.insert_bunjang(df)
